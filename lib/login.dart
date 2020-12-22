@@ -23,7 +23,7 @@ class _FormLoginState extends State<FormLogin> {
               child: Column(
                 children: <Widget>[
                   Image.asset(
-                    "asset/logo.jpg",
+                    "img/logo.jpg",
                     width: 300.0,
                     height: 300.0,
                   ),
