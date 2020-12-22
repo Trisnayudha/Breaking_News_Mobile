@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'dashboard.dart';
+
 class FormLogin extends StatefulWidget {
   @override
   _FormLoginState createState() => _FormLoginState();
@@ -96,6 +98,12 @@ class _FormLoginState extends State<FormLogin> {
                       onPressed: () {
                         if (userController.text == 'trisnayudha' &&
                             passController.text == 'yudha ganteng') {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Dashboard(),
+                            ),
+                          );
                         } else {
                           showAlertDialogCupertino('Input!!!');
                         }
@@ -134,7 +142,7 @@ class _FormLoginState extends State<FormLogin> {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text('Kesalahan'),
+          title: Text('Informasi'),
           content: Text('Username atau Password Salah'),
           actions: [
             CupertinoDialogAction(
