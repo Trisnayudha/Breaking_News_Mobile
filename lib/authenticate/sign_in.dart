@@ -34,6 +34,7 @@ class _SignInState extends State<SignIn> {
                     height: 300.0,
                   ),
                   Divider(),
+                  Text("Sign In",),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                     child: TextFormField(
@@ -121,10 +122,13 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
-                  FlatButton(child: Text("Register"),
-                  onPressed: () {
-                    widget.toggleView();
-                  },),
+                  Text("I dont have already Account"),
+                  FlatButton(
+                    child: Text("Register"),
+                    onPressed: () {
+                      widget.toggleView();
+                    },
+                  ),
                 ],
               ),
             )));
