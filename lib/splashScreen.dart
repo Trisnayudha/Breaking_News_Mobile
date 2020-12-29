@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Data',
+                'Breaking',
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                       letterSpacing: .4,
@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               Text(
-                ' Ku',
+                'News',
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                       letterSpacing: .4,
@@ -68,54 +68,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ],
           ),
-          //Seharusnya ada dibawah
-          // Stack(
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Text(
-                    "Copy Right",
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.green,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Text(
-                    " Trisnayudha Bachtiar 2020",
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // ),
         ],
       ),
     );
   }
 }
-// body: Padding(
-//         padding: const EdgeInsets.all(16),
-//         child: Stack(
-//           children: <Widget>[
-//             Align(
-//               alignment: Alignment.bottomCenter,
-//               child: Text(
-//                 "Bottom Center",
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
