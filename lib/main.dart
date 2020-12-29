@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:project_uas/service/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:project_uas/models/user.dart';
+import 'home/wrapper.dart';
 
-import 'package:project_uas/splashScreen.dart';
+void main() => runApp(MyApp());
 
-
-
-void main() {
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Splash Screen',
-      home: SplashScreen()));
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        home: Wrapper(),
+      ),
+    );
+  }
 }

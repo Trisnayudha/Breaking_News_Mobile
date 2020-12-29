@@ -1,21 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_uas/service/auth.dart';
 
-import 'dashboard.dart';
+class Register extends StatefulWidget {
 
-class FormLogin extends StatefulWidget {
+  final Function toggleView;
+  Register({this.toggleView});
   @override
-  _FormLoginState createState() => _FormLoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _FormLoginState extends State<FormLogin> {
+class _RegisterState extends State<Register> {
   bool _securText = true;
-  TextEditingController userController = new TextEditingController();
-  TextEditingController passController = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final globalKey = GlobalKey<ScaffoldState>();
+  final AuthService _auth = AuthService();
+  String username = '';
+  String password = '';
 
-  String user = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,6 @@ class _FormLoginState extends State<FormLogin> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                     child: TextFormField(
-                      controller: userController,
                       decoration: InputDecoration(
                         hintText: "Username",
                         suffixIcon: Icon(
@@ -51,22 +51,14 @@ class _FormLoginState extends State<FormLogin> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return "Email diperlukan";
-                        } else {
-                          return null;
-                        }
-                      },
-                      onChanged: (String value) {
-                        user = value;
+                      onChanged: (val) {
+                        setState(() => username = val);
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                     child: TextFormField(
-                      controller: passController,
                       decoration: InputDecoration(
                         hintText: "Password",
                         suffixIcon: IconButton(
@@ -90,23 +82,17 @@ class _FormLoginState extends State<FormLogin> {
                         ),
                       ),
                       obscureText: _securText,
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: RaisedButton(
-                      onPressed: () {
-                        if (userController.text == 'trisnayudha' &&
-                            passController.text == 'yudha ganteng') {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Dashboard(),
-                            ),
-                          );
-                        } else {
-                          showAlertDialogCupertino('Input!!!');
-                        }
+                      onPressed: () async {
+                        print(username);
+                        print(password);
                       },
                       color: Colors.blue[100],
                       shape: RoundedRectangleBorder(
@@ -121,7 +107,7 @@ class _FormLoginState extends State<FormLogin> {
                           ),
                           alignment: Alignment.center,
                           child: const Text(
-                            'Login',
+                            'Register',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.blueAccent,
@@ -131,32 +117,13 @@ class _FormLoginState extends State<FormLogin> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                   FlatButton(child: Text("Login"),
+                  onPressed: () {
+                    widget.toggleView();
+                  },),
                 ],
               ),
             )));
-  }
-
-  showAlertDialogCupertino(text) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('Informasi'),
-          content: Text('Username atau Password Salah'),
-          actions: [
-            CupertinoDialogAction(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-                print('Clicked No!');
-              },
-            ),
-          ],
-        );
-      },
-      barrierColor: Colors.black.withOpacity(0.5),
-      barrierDismissible: false,
-    );
   }
 }
