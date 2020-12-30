@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Username",
+                    hintText: "Email",
                     suffixIcon: Icon(
                       Icons.account_box,
                       color: Colors.blueAccent,
@@ -46,7 +46,7 @@ class _RegisterState extends State<Register> {
                         color: Colors.blueAccent,
                       ),
                     ),
-                    labelText: "Username: ",
+                    labelText: "Email: ",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

@@ -39,7 +39,7 @@ class _SignInState extends State<SignIn> {
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                     child: TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Username",
+                        hintText: "Email",
                         suffixIcon: Icon(
                           Icons.account_box,
                           color: Colors.blueAccent,
@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
                             color: Colors.blueAccent,
                           ),
                         ),
-                        labelText: "Username: ",
+                        labelText: "Email: ",
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
