@@ -32,7 +32,7 @@ class _RegisterState extends State<Register> {
                   children: <Widget>[
                     Divider(),
                     Image.asset(
-                      "img/logo.jpg",
+                      "img/back1.png",
                       width: 300.0,
                       height: 300.0,
                     ),
