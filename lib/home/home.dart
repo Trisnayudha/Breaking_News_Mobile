@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:project_uas/service/auth.dart';
-
+import 'package:project_uas/views/add.dart';
+import 'package:project_uas/views/dashboard.dart';
+import 'package:project_uas/views/history.dart';
+import 'package:project_uas/views/profile.dart';
+import 'package:project_uas/views/search.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,7 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
-  List<String> _options = ["Home", "Search", "Add", "List", "Profile"];
+  var _options = [Dashboard(), Search(),Add(),History(),Profile()];
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
-        child: Center(child: Text(_options[_page])),
-      ),
+      body: _options[_page],
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         index: 0,

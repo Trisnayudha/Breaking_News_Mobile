@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_uas/home/home.dart';
 import 'package:project_uas/service/auth.dart';
 import 'package:project_uas/splashscreen/splashScreen.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
-        home: SplashScreen(),
+        home: Home(),
       ),
     );
   }
