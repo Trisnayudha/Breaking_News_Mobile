@@ -4,26 +4,30 @@ import 'package:project_uas/service/auth.dart';
 class Register extends StatefulWidget {
   final Function toggleView;
   Register({this.toggleView});
+
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  bool _securText = true;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final globalKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
-  String username = '';
-  String password = '';
+  final _formKey = GlobalKey<FormState>();
+  bool _securText = true;
+  final globalKey = GlobalKey<ScaffoldState>();
 
+  //Text Field
+  String email = '';
+  String password = '';
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        key: _formKey,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
+              Divider(),
               Image.asset(
                 "img/logo.jpg",
                 width: 300.0,
@@ -51,8 +55,9 @@ class _RegisterState extends State<Register> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  validator: (val) => val.isEmpty ? 'Enter an email ' : null,
                   onChanged: (val) {
-                    setState(() => username = val);
+                    setState(() => email = val);
                   },
                 ),
               ),
@@ -81,6 +86,8 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   obscureText: _securText,
+                  validator: (val) =>
+                      val.length < 8 ? 'Minimal 8 Karakter ' : null,
                   onChanged: (val) {
                     setState(() => password = val);
                   },
@@ -90,8 +97,13 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.all(15.0),
                 child: RaisedButton(
                   onPressed: () async {
-                    print(username);
-                    print(password);
+                    if (_formKey.currentState.validate()) {
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() => error = "Please supply a valid email");
+                      }
+                    }
                   },
                   color: Colors.blue[100],
                   shape: RoundedRectangleBorder(
