@@ -2,6 +2,7 @@ class Item {
   final String id;
   final String judul;
   final String penulis;
+  final String image;
   final String desc;
   final int tggl;
   final String kategori;
@@ -10,6 +11,7 @@ class Item {
     this.id,
     this.judul,
     this.penulis,
+    this.image,
     this.desc,
     this.tggl,
     this.kategori,
@@ -20,6 +22,7 @@ class Item {
       id: json['id'],
       judul: json['judul'],
       penulis: json['penulis'],
+      image: json['image'],
       desc: json['desc'],
       tggl: json['tggl'],
       kategori: json['kategori'],
@@ -30,6 +33,7 @@ class Item {
         'id': id,
         'judul': judul,
         'penulis': penulis,
+        'image': image,
         'desc': desc,
         'tggl': tggl,
         'kategori': kategori,

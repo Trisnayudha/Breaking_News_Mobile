@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
-  var _options = [Dashboard(), Search(),Add(),History(),Profile()];
+  var _options = [Dashboard(), Search(),Add(item: null,),History(),Profile()];
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {

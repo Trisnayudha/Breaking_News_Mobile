@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:project_uas/home/home.dart';
 import 'package:project_uas/models/item.dart';
 
-class Add extends StatefulWidget {
+class ViewPage extends StatefulWidget {
   final Item item;
   final String id;
 
-  Add({@required this.item, this.id});
+  ViewPage({@required this.item, this.id});
 
   @override
-  _AddState createState() => _AddState();
+  _ViewPageState createState() => _ViewPageState();
 }
 
-class _AddState extends State<Add> {
+class _ViewPageState extends State<ViewPage> {
   TextEditingController judulController;
   TextEditingController descController;
   TextEditingController tgglController;
@@ -41,6 +40,43 @@ class _AddState extends State<Add> {
         color: Colors.white,
         child: Column(
           children: [
+            Container(
+              height: 50,
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Edit Item',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: InkWell(
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Icon(Icons.arrow_back),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 1,
+              color: Colors.black,
+            ),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.only(
@@ -87,35 +123,58 @@ class _AddState extends State<Add> {
                     height: 10,
                   ),
                   FlatButton(
+                    height: 45,
+                    color: Colors.blue,
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                    onPressed: () {
+                      Item item = Item(
+                        id: 'CH-09',
+                        judul: judulController.text,
+                        penulis: '',
+                        desc: descController.text,
+                        tggl: int.parse(tgglController.text),
+                        kategori: '',
+                      );
+                      if (widget.item == null) {
+                        Firestore.instance
+                            .collection('item')
+                            .add(item.toJson());
+                      } else {
+                        Firestore.instance
+                            .collection('item')
+                            .document(widget.id)
+                            .updateData(item.toJson());
+                      }
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Visibility(
+                    visible: widget.item != null ? true : false,
+                    child: FlatButton(
                       height: 45,
-                      color: Colors.blue,
+                      color: Colors.red,
                       child: Text(
-                        'Submit',
+                        'Delete',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                         ),
                       ),
                       onPressed: () {
-                        Item item = Item(
-                          id: 'CH-09',
-                          judul: judulController.text,
-                          penulis: '',
-                          desc: descController.text,
-                          tggl: int.parse(tgglController.text),
-                          kategori: '',
-                        );
-
                         Firestore.instance
                             .collection('item')
-                            .add(item.toJson());
-
-                        Navigator.of(context).pushReplacement(
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) {
-                          return new Home();
-                        }));
-                      }),
+                            .document(widget.id)
+                            .delete();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),

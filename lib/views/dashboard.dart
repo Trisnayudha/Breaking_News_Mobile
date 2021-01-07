@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_uas/models/item.dart';
 import 'package:project_uas/service/card_item.dart';
+import 'package:project_uas/views/view_page.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -34,6 +35,7 @@ class _DashboardState extends State<Dashboard> {
                       Item item = Item(
                         id: document['id'],
                         judul: document['judul'],
+                        image: document['image'],
                         penulis: document['penulis'],
                         desc: document['desc'],
                         tggl: document['tggl'],
@@ -42,15 +44,15 @@ class _DashboardState extends State<Dashboard> {
                       return InkWell(
                         child: CardItem(item: item),
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => EditItemPage(
-                          //       item: item,
-                          //       id: document.id,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewPage(
+                                item: item,
+                                id: document.documentID,
+                              ),
+                            ),
+                          );
                         },
                       );
                     }).toList(),
