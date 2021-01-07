@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:project_uas/home/home.dart';
 import 'package:project_uas/models/item.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Add extends StatefulWidget {
   final Item item;
@@ -17,27 +20,28 @@ class _AddState extends State<Add> {
   TextEditingController judulController;
   TextEditingController descController;
   TextEditingController tgglController;
+  TextEditingController imageController;
+  TextEditingController kategoriController;
+  TextEditingController penulisController;
+  File image;
 
   @override
   void initState() {
     judulController = TextEditingController();
     descController = TextEditingController();
     tgglController = TextEditingController();
+    imageController = TextEditingController();
+    kategoriController = TextEditingController();
+    penulisController = TextEditingController();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.item != null) {
-      judulController.text = widget.item.judul;
-      descController.text = widget.item.desc;
-      tgglController.text = widget.item.tggl.toString();
-    }
-
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 25),
+        padding: EdgeInsets.only(top: 50),
         color: Colors.white,
         child: Column(
           children: [
@@ -49,25 +53,62 @@ class _AddState extends State<Add> {
                   right: 10,
                 ),
                 children: [
+                  Container(
+                    height: 150,
+                    child: Center(
+                      child: InkWell(
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.grey,
+                          child: CircleAvatar(
+                            radius: 59,
+                            backgroundColor: Colors.white,
+                            backgroundImage: image != null
+                                ? FileImage(image)
+                                : widget.item != null
+                                    ? widget.item.image.isNotEmpty
+                                        ? NetworkImage(widget.item.image)
+                                        : AssetImage('img/back1.png')
+                                    : AssetImage('img/back1.png'),
+                          ),
+                        ),
+                        onTap: () {
+                          getImage(context);
+                        },
+                      ),
+                    ),
+                  ),
                   TextField(
                     controller: judulController,
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Name',
+                      labelText: 'Judul Berita',
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   TextField(
-                    controller: descController,
+                    controller: penulisController,
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Desc',
+                      labelText: 'Penulis',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: kategoriController,
+                    textAlignVertical: TextAlignVertical.center,
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Kategori',
                     ),
                   ),
                   SizedBox(
@@ -80,7 +121,19 @@ class _AddState extends State<Add> {
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Qty',
+                      labelText: 'Tanggal',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: descController,
+                    textAlignVertical: TextAlignVertical.center,
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Deskripsi Berita',
                     ),
                   ),
                   SizedBox(
@@ -98,13 +151,15 @@ class _AddState extends State<Add> {
                       ),
                       onPressed: () {
                         Item item = Item(
-                          id: 'CH-09',
-                          judul: judulController.text,
-                          penulis: '',
-                          desc: descController.text,
-                          tggl: int.parse(tgglController.text),
-                          kategori: '',
-                        );
+                            id: 'CH-09',
+                            judul: judulController.text,
+                            penulis: penulisController.text,
+                            image: image != null
+                                ? uploadFile(image, widget.id)
+                                : '',
+                            desc: descController.text,
+                            tggl: int.parse(tgglController.text),
+                            kategori: kategoriController.text);
 
                         Firestore.instance
                             .collection('item')
@@ -123,5 +178,60 @@ class _AddState extends State<Add> {
         ),
       ),
     );
+  }
+
+  imgFromCamera() async {
+    PickedFile imgCamera = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 50);
+    setState(() {
+      image = File(imgCamera.path);
+    });
+  }
+
+  imgFromGallery() async {
+    PickedFile imgGallery = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      image = File(imgGallery.path);
+    });
+  }
+
+  getImage(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Gallery'),
+                    onTap: () {
+                      imgFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: Icon(Icons.photo_camera),
+                  title: Text('Camera'),
+                  onTap: () {
+                    imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<String> uploadFile(File image, String filename) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    StorageReference ref = storage.ref().child("item/" + filename);
+    StorageUploadTask uploadTask = ref.putFile(image);
+    StorageTaskSnapshot snapshot = await uploadTask.onComplete;
+    return await snapshot.ref.getDownloadURL();
   }
 }

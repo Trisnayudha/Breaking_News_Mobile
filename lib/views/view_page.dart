@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_uas/models/item.dart';
 
 class ViewPage extends StatefulWidget {
@@ -22,24 +22,18 @@ class _ViewPageState extends State<ViewPage> {
     judulController = TextEditingController();
     descController = TextEditingController();
     tgglController = TextEditingController();
+    // String tggls = tgglController.toString();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.item != null) {
-      judulController.text = widget.item.judul;
-      descController.text = widget.item.desc;
-      tgglController.text = widget.item.tggl.toString();
-    }
-
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 25),
-        color: Colors.white,
         child: Column(
-          children: [
+          children: <Widget>[
             Container(
               height: 50,
               padding: EdgeInsets.only(
@@ -51,7 +45,7 @@ class _ViewPageState extends State<ViewPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Edit Item',
+                      'Kategori',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -63,7 +57,7 @@ class _ViewPageState extends State<ViewPage> {
                     child: InkWell(
                       child: Padding(
                         padding: EdgeInsets.all(5),
-                        child: Icon(Icons.arrow_back),
+                        child: Icon(Icons.arrow_back_ios),
                       ),
                       onTap: () {
                         Navigator.pop(context);
@@ -85,95 +79,35 @@ class _ViewPageState extends State<ViewPage> {
                   right: 10,
                 ),
                 children: [
-                  TextField(
-                    controller: judulController,
-                    textAlignVertical: TextAlignVertical.center,
+                  Text(
+                    widget.item.judul,
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          letterSpacing: .4,
+                          fontSize: 28.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
+                    ),
                     textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
+                  ),
+                  Image.asset(
+                    'img/back1.png',
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Text("Tanggal Publish: "),
+                        Text(widget.item.tggl.toString()),
+                        Text(" Penulis: "),
+                        Text(widget.item.penulis),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: descController,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Desc',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: tgglController,
-                    keyboardType: TextInputType.number,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Qty',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  FlatButton(
-                    height: 45,
-                    color: Colors.blue,
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    ),
-                    onPressed: () {
-                      Item item = Item(
-                        id: 'CH-09',
-                        judul: judulController.text,
-                        penulis: '',
-                        desc: descController.text,
-                        tggl: int.parse(tgglController.text),
-                        kategori: '',
-                      );
-                      if (widget.item == null) {
-                        Firestore.instance
-                            .collection('item')
-                            .add(item.toJson());
-                      } else {
-                        Firestore.instance
-                            .collection('item')
-                            .document(widget.id)
-                            .updateData(item.toJson());
-                      }
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Visibility(
-                    visible: widget.item != null ? true : false,
-                    child: FlatButton(
-                      height: 45,
-                      color: Colors.red,
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      onPressed: () {
-                        Firestore.instance
-                            .collection('item')
-                            .document(widget.id)
-                            .delete();
-                        Navigator.pop(context);
-                      },
-                    ),
+                  Divider(),
+                  Text(widget.item.desc),
+                  Divider(
+                    height: 20,
                   ),
                 ],
               ),

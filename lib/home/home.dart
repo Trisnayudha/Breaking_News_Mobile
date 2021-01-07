@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:project_uas/service/auth.dart';
+
 import 'package:project_uas/views/add.dart';
 import 'package:project_uas/views/dashboard.dart';
 import 'package:project_uas/views/history.dart';
@@ -16,24 +16,11 @@ class _HomeState extends State<Home> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   var _options = [Dashboard(), Search(),Add(item: null,),History(),Profile()];
-  final AuthService _auth = AuthService();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Breaking News"),
-        elevation: 0.0,
-        //sementara
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Logout'),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
-      ),
+      
       body: _options[_page],
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,

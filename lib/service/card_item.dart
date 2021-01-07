@@ -51,13 +51,23 @@ class _CardItemState extends State<CardItem> {
               fit: BoxFit.cover,
             ),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: Text(
-                widget.item.judul,
-                style: TextStyle(fontSize: 12, color: Colors.black),
-              ),
+          Container(
+            height: 150,
+            width: 200,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    widget.item.judul,
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                    maxLines: 1,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
