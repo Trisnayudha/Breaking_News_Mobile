@@ -6,20 +6,23 @@ class AuthService {
 
   // Create user obj based on FirebaseUser
 
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  Users _userFromFirebaseUser(User user) {
+    return user != null ? Users(uid: user.uid) : null;
   }
 
   //auth change user stream
-  Stream<User> get user {
-    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  Stream<Users> get user {
+    return _auth
+        .authStateChanges()
+        // .map((User user) => _userFromFirebaseUser(user));  Sama dengan yang dibawah
+        .map(_userFromFirebaseUser);
   }
 
   // Sign in Anom
-  Future signInAnom() async {
+  Future signInAnon() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
+      UserCredential result = await _auth.signInAnonymously();
+      User user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -31,9 +34,9 @@ class AuthService {
 
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = result.user;
+      User user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -44,9 +47,14 @@ class AuthService {
   // Register Username & Password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = result.user;
+      User user = result.user;
+
+      // create a new document for the user with the UID
+      // await DatabaseService(uid: user.uid)
+      //     .updateUserData('0', 'new crew member', 100);
+
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

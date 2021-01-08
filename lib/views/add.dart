@@ -59,18 +59,13 @@ class _AddState extends State<Add> {
                       child: InkWell(
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundColor: Colors.grey,
-                          child: CircleAvatar(
-                            radius: 59,
-                            backgroundColor: Colors.white,
-                            backgroundImage: image != null
-                                ? FileImage(image)
-                                : widget.item != null
-                                    ? widget.item.image.isNotEmpty
-                                        ? NetworkImage(widget.item.image)
-                                        : AssetImage('img/back1.png')
-                                    : AssetImage('img/back1.png'),
-                          ),
+                          backgroundImage: image != null
+                              ? FileImage(image)
+                              : widget.item != null
+                                  ? widget.item.image.isNotEmpty
+                                      ? NetworkImage(widget.item.image)
+                                      : AssetImage('img/back1.png')
+                                  : AssetImage('img/back1.png'),
                         ),
                         onTap: () {
                           getImage(context);
@@ -161,7 +156,7 @@ class _AddState extends State<Add> {
                             tggl: int.parse(tgglController.text),
                             kategori: kategoriController.text);
 
-                        Firestore.instance
+                        FirebaseFirestore.instance
                             .collection('item')
                             .add(item.toJson());
 
@@ -229,9 +224,10 @@ class _AddState extends State<Add> {
 
   Future<String> uploadFile(File image, String filename) async {
     FirebaseStorage storage = FirebaseStorage.instance;
-    StorageReference ref = storage.ref().child("item/" + filename);
-    StorageUploadTask uploadTask = ref.putFile(image);
-    StorageTaskSnapshot snapshot = await uploadTask.onComplete;
-    return await snapshot.ref.getDownloadURL();
+    Reference ref = storage.ref().child("item/" + filename);
+    UploadTask uploadTask = ref.putFile(image);
+    return uploadTask.then((res) async {
+      return await res.ref.getDownloadURL();
+    });
   }
 }

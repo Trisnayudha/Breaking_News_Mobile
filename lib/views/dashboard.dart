@@ -37,7 +37,7 @@ class _DashboardState extends State<Dashboard> {
               padding: EdgeInsets.all(15),
               color: Colors.blue,
               child: StreamBuilder(
-                stream: Firestore.instance.collection('item').snapshots(),
+                stream: FirebaseFirestore.instance.collection('item').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
                   }
                   return ListView(
                     scrollDirection: Axis.vertical,
-                    children: snapshot.data.documents.map((document) {
+                    children: snapshot.data.docs.map((document) {
                       Item item = Item(
                         id: document['id'],
                         judul: document['judul'],
@@ -65,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
                             MaterialPageRoute(
                               builder: (context) => ViewPage(
                                 item: item,
-                                id: document.documentID,
+                                id: document.id,
                               ),
                             ),
                           );
