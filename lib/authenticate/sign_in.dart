@@ -139,12 +139,19 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-                Text("I dont have already Account"),
-                FlatButton(
-                  child: Text("Register"),
-                  onPressed: () {
-                    widget.toggleView();
-                  },
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("I dont have already Account"),
+                      FlatButton(
+                        child: Text("Register"),
+                        onPressed: () {
+                          widget.toggleView();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

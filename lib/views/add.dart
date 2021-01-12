@@ -144,22 +144,27 @@ class _AddState extends State<Add> {
                           fontSize: 14,
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         Item item = Item(
                             id: 'CH-09',
                             judul: judulController.text,
                             penulis: penulisController.text,
                             image: image != null
-                                ? uploadFile(image, widget.id)
+                                ? await uploadFile(image, widget.id) //error
                                 : '',
                             desc: descController.text,
                             tggl: int.parse(tgglController.text),
                             kategori: kategoriController.text);
-
-                        FirebaseFirestore.instance
-                            .collection('item')
-                            .add(item.toJson());
-
+                        if (widget.item == null) {
+                          FirebaseFirestore.instance
+                              .collection('item')
+                              .add(item.toJson());
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection('item')
+                              .doc(widget.id)
+                              .update(item.toJson());
+                        }
                         Navigator.of(context).pushReplacement(
                             new MaterialPageRoute(
                                 builder: (BuildContext context) {

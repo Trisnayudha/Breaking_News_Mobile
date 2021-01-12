@@ -138,12 +138,19 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-                    Text("I have already Account"),
-                    FlatButton(
-                      child: Text("Sign In"),
-                      onPressed: () {
-                        widget.toggleView();
-                      },
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("I have already Account"),
+                          FlatButton(
+                            child: Text("Sign In"),
+                            onPressed: () {
+                              widget.toggleView();
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

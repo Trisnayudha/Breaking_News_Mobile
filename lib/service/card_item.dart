@@ -34,22 +34,21 @@ class _CardItemState extends State<CardItem> {
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            child:
-                // widget.item.image.isNotEmpty
-                //     ? Image.network(
-                //         widget.item.image,
-                //         height: 100,
-                //         width: 90,
-                //         fit: BoxFit.cover,
-                //       )
-                //     :
-                Image.asset(
-              'img/back1.png',
-              height: 100,
-              width: 90,
-              fit: BoxFit.cover,
-            ),
+                bottomRight: Radius.circular(10),
+                ),
+            child: widget.item.image != null
+                ? Image.network(
+                    widget.item.image,
+                    height: 100,
+                    width: 90,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'img/back1.png',
+                    height: 100,
+                    width: 90,
+                    fit: BoxFit.cover,
+                  ),
           ),
           Container(
             height: 150,
