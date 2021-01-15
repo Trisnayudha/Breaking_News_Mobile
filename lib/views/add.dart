@@ -145,15 +145,21 @@ class _AddState extends State<Add> {
                         ),
                       ),
                       onPressed: () async {
+                        String randomMillis =
+                            DateTime.now().millisecondsSinceEpoch.toString();
                         Item item = Item(
-                            id: 'CH-09',
+                            id: widget.item != null
+                                ? widget.item.id
+                                : randomMillis,
                             judul: judulController.text,
                             penulis: penulisController.text,
                             image: image != null
-                                ? await uploadFile(image, widget.id) //error
+                                ? widget.item != null
+                                    ? await uploadFile(image, widget.id)
+                                    : await uploadFile(image, randomMillis)
                                 : '',
                             desc: descController.text,
-                            tggl: int.parse(tgglController.text),
+                            tggl: tgglController.text,
                             kategori: kategoriController.text);
                         if (widget.item == null) {
                           FirebaseFirestore.instance

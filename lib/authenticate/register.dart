@@ -13,12 +13,14 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  bool _securText = true;
   final globalKey = GlobalKey<ScaffoldState>();
+  //fitur
+  bool _securText = true;
   bool loading = false;
   //Text Field
-  String email = '';
-  String password = '';
+  String username;
+  String email;
+  String password;
   String error = '';
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,33 @@ class _RegisterState extends State<Register> {
                     ),
                     Divider(),
                     Text("Register"),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Username",
+                          suffixIcon: Icon(
+                            Icons.account_balance_sharp,
+                            color: Colors.blueAccent,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            //DENGAN BORDER BERWARNA PINK
+                            borderSide: BorderSide(
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          labelText: "Username: ",
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        validator: (val) =>
+                            val.isEmpty ? 'Enter an Username ' : null,
+                        onChanged: (val) {
+                          setState(() => username = val);
+                        },
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                       child: TextFormField(
@@ -104,8 +133,10 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    username, email, password);
+
                             if (result == null) {
                               setState(() {
                                 error = "Please supply a valid email";
