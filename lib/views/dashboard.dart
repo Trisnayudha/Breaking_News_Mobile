@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_uas/models/item.dart';
-import 'package:project_uas/service/auth.dart';
 import 'package:project_uas/service/card_item.dart';
 import 'package:project_uas/views/view_page.dart';
 
@@ -11,33 +10,23 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Breaking News"),
+        title: Center(child: Text("Breaking News")),
         elevation: 0.0,
-        //sementara
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Logout'),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
       ),
       body: Container(
         child: Column(
           children: [
             Container(
-              height: 550,
+              height: 560,
               padding: EdgeInsets.all(15),
-              color: Colors.blue,
+              color: Colors.white,
               child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('item').snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection('item').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {

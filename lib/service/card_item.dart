@@ -14,16 +14,15 @@ class _CardItemState extends State<CardItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: 150,
+      height: 85,
+      width: 160,
       margin: EdgeInsets.only(
-        right: 5,
         left: 5,
         bottom: 5,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: Colors.red,
+        // color: Colors.red,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,36 +38,69 @@ class _CardItemState extends State<CardItem> {
             child: widget.item.image.isNotEmpty
                 ? Image.network(
                     widget.item.image,
-                    height: 100,
-                    width: 90,
+                    height: 85,
+                    width: 85,
                     fit: BoxFit.cover,
                   )
                 : Image.asset(
                     'img/back1.png',
-                    height: 100,
-                    width: 90,
+                    height: 85,
+                    width: 85,
                     fit: BoxFit.cover,
                   ),
           ),
           Container(
-            height: 150,
-            width: 200,
+            height: 85,
+            width: 180,
+            // color: Colors.blue,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Text(
-                    widget.item.judul,
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                    maxLines: 1,
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.clip,
-                  ),
+                Text(
+                  widget.item.judul.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                  child: Text(widget.item.tggl,
+                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      maxLines: 1,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis),
+                )
               ],
             ),
           ),
+          Container(
+            // color: Colors.red,
+            width: 30,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.green,
+                    ),
+                    onPressed: () {
+                      // favorite.save(news: element).then((value) {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          duration: Duration(milliseconds: 500),
+                          backgroundColor: Colors.green,
+                          content: Text('News has been saved')));
+                      // });
+                    }),
+              ],
+            ),
+          )
         ],
       ),
     );
