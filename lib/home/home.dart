@@ -3,7 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:project_uas/views/add.dart';
 import 'package:project_uas/views/dashboard.dart';
-import 'package:project_uas/views/history.dart';
+import 'package:project_uas/views/favorite.dart';
 import 'package:project_uas/views/profile.dart';
 import 'package:project_uas/views/search.dart';
 
@@ -15,12 +15,19 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
-  var _options = [Dashboard(), Search(),Add(item: null,),History(),Profile()];
-  
+  var _options = [
+    Dashboard(),
+    Search(),
+    Add(
+      item: null,
+    ),
+    Favorite(),
+    Profile()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: _options[_page],
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,

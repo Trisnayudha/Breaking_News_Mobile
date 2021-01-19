@@ -13,10 +13,7 @@ class AuthService {
 
   //auth change user stream
   Stream<Users> get user {
-    return _auth
-        .authStateChanges()
-        // .map((User user) => _userFromFirebaseUser(user));  Sama dengan yang dibawah
-        .map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   // Sign in Anom

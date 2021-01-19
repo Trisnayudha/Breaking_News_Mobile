@@ -41,8 +41,8 @@ class _ProfileState extends State<Profile> {
                       child: (data.photo != '')
                           ? Image.network(
                               data.photo,
-                              height: 150,
-                              width: 150,
+                              height: 90,
+                              width: 90,
                               fit: BoxFit.cover,
                             )
                           : Image.asset(
@@ -53,14 +53,66 @@ class _ProfileState extends State<Profile> {
                             ),
                     ),
                   ),
-                  Center(child: Text(data.username)),
-                  Center(child: Text(data.email)),
-                  FlatButton.icon(
-                    icon: Icon(Icons.person),
-                    label: Text('Logout'),
-                    onPressed: () async {
-                      await _auth.signOut();
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Center(child: Text(data.username)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Center(child: Text(data.email)),
+                  ),
+                  Divider(),
+                  Container(
+                    child: Column(
+                      children: [
+                        FlatButton.icon(
+                          icon: Icon(Icons.person),
+                          label: Text('Edit Profile'),
+                          onPressed: () async {
+                            // await _auth.signOut();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        FlatButton.icon(
+                          icon: Icon(Icons.vpn_key),
+                          label: Text('Change Password'),
+                          onPressed: () async {
+                            // await _auth.signOut();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        FlatButton.icon(
+                          icon: Icon(Icons.settings),
+                          label: Text('Setting'),
+                          onPressed: () async {
+                            // await _auth.signOut();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        FlatButton.icon(
+                          icon: Icon(Icons.logout),
+                          label: Text('Log Out'),
+                          onPressed: () async {
+                            await _auth.signOut();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

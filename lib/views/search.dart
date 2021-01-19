@@ -8,7 +8,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  
   TextEditingController keyword = TextEditingController();
   // List<News> listNews = List<News>();
   Condition condition = Condition.initial;
@@ -34,9 +33,9 @@ class _SearchState extends State<Search> {
                         ),
                       )
                     : null
-                    // BodySection(
-                    //listNews: listNews,
-                    // )
+            // BodySection(
+            //listNews: listNews,
+            // )
           ],
         ),
       ),
@@ -52,7 +51,7 @@ class _SearchState extends State<Search> {
   Widget headSection({double size}) {
     return Container(
       padding: EdgeInsets.only(top: 40, left: 10, right: 10),
-      height: 180,
+      height: 120,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.lightBlue[300],
@@ -65,13 +64,6 @@ class _SearchState extends State<Search> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            'Breaking News',
-            style: TextStyle(
-                fontSize: 28,
-                color: Colors.black54,
-                fontWeight: FontWeight.bold),
-          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5),
             width: size * 0.9,
