@@ -41,6 +41,14 @@ class DatabaseService {
         .map(_userDataFromSnapshot);
   }
 
+  // Future<void> changeProfile(String username) async {
+  //   return await userCollection
+  //       .doc(uid)
+  //       .collection('profile')
+  //       .doc(uid)
+  //       .set({'username': username});
+  // }
+
   //buat Masukin data ke database
   Future createBerita(String judul, String penulis, String kategori,
       String tggl, String desc, String image) async {

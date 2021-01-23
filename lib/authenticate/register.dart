@@ -46,7 +46,7 @@ class _RegisterState extends State<Register> {
                         decoration: InputDecoration(
                           hintText: "Username",
                           suffixIcon: Icon(
-                            Icons.account_balance_sharp,
+                            Icons.person,
                             color: Colors.blueAccent,
                           ),
                           focusedBorder: UnderlineInputBorder(
@@ -136,7 +136,6 @@ class _RegisterState extends State<Register> {
                             dynamic result =
                                 await _auth.registerWithEmailAndPassword(
                                     username, email, password);
-
                             if (result == null) {
                               setState(() {
                                 error = "Please supply a valid email";

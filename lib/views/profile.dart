@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:project_uas/models/user.dart';
 import 'package:project_uas/service/auth.dart';
 import 'package:project_uas/service/database.dart';
+import 'package:project_uas/views/change_password.dart';
+import 'package:project_uas/views/edit_profile.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -69,7 +71,12 @@ class _ProfileState extends State<Profile> {
                           icon: Icon(Icons.person),
                           label: Text('Edit Profile'),
                           onPressed: () async {
-                            // await _auth.signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditProfile(data.username)),
+                            );
                           },
                         ),
                       ],
@@ -82,20 +89,11 @@ class _ProfileState extends State<Profile> {
                           icon: Icon(Icons.vpn_key),
                           label: Text('Change Password'),
                           onPressed: () async {
-                            // await _auth.signOut();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      children: [
-                        FlatButton.icon(
-                          icon: Icon(Icons.settings),
-                          label: Text('Setting'),
-                          onPressed: () async {
-                            // await _auth.signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePassword()),
+                            );
                           },
                         ),
                       ],
@@ -118,7 +116,9 @@ class _ProfileState extends State<Profile> {
               ),
             );
           } else {
-            return Text("loading");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         });
   }
