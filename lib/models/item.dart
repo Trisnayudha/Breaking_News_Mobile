@@ -4,7 +4,7 @@ class Item {
   final String penulis;
   final String image;
   final String desc;
-  final String tggl;
+  final int tggl;
   final String kategori;
 
   Item({

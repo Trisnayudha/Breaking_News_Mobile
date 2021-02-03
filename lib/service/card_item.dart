@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_uas/models/item.dart';
+import 'package:intl/intl.dart';
 
 class CardItem extends StatefulWidget {
   final Item item;
@@ -69,7 +70,10 @@ class _CardItemState extends State<CardItem> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-                  child: Text(widget.item.tggl,
+                  child: Text(
+                      DateFormat.yMMMd().format(
+                          DateTime.fromMicrosecondsSinceEpoch(
+                              int.parse(widget.item.tggl.toString()))),
                       style: TextStyle(fontSize: 10, color: Colors.grey),
                       maxLines: 1,
                       textAlign: TextAlign.start,

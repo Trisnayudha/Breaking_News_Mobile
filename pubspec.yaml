@@ -39,6 +39,7 @@ dependencies:
   provider: ^4.3.2+4
   flutter_spinkit: "^4.0.0"
   image_picker: ^0.6.7+21
+  flutter_rounded_date_picker: ^1.0.5+1
    
 
 dev_dependencies:

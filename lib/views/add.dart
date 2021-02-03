@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_uas/home/home.dart';
 import 'package:project_uas/models/item.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class Add extends StatefulWidget {
   final Item item;
@@ -24,7 +25,7 @@ class _AddState extends State<Add> {
   TextEditingController kategoriController;
   TextEditingController penulisController;
   File image;
-
+  DateTime newDateTime;
   @override
   void initState() {
     judulController = TextEditingController();
@@ -110,19 +111,6 @@ class _AddState extends State<Add> {
                     height: 10,
                   ),
                   TextField(
-                    controller: tgglController,
-                    keyboardType: TextInputType.number,
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Tanggal',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
                     controller: descController,
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
@@ -138,6 +126,26 @@ class _AddState extends State<Add> {
                       height: 45,
                       color: Colors.blue,
                       child: Text(
+                        "date",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                      onPressed: () async {
+                        String randomtggl =
+                            DateTime.now().microsecondsSinceEpoch.toString();
+
+                        print(randomtggl);
+                        var tgglfix = DateFormat.yMMMd().format(
+                            DateTime.fromMicrosecondsSinceEpoch(
+                                int.parse(randomtggl)));
+                        print(tgglfix);
+                      }),
+                  FlatButton(
+                      height: 45,
+                      color: Colors.blue,
+                      child: Text(
                         'Submit',
                         style: TextStyle(
                           color: Colors.white,
@@ -146,7 +154,8 @@ class _AddState extends State<Add> {
                       ),
                       onPressed: () async {
                         String randomMillis =
-                            DateTime.now().millisecondsSinceEpoch.toString();
+                            DateTime.now().microsecondsSinceEpoch.toString();
+
                         Item item = Item(
                             id: widget.item != null
                                 ? widget.item.id
@@ -159,7 +168,7 @@ class _AddState extends State<Add> {
                                     : await uploadFile(image, randomMillis)
                                 : '',
                             desc: descController.text,
-                            tggl: tgglController.text,
+                            tggl: int.parse(randomMillis),
                             kategori: kategoriController.text);
                         if (widget.item == null) {
                           FirebaseFirestore.instance

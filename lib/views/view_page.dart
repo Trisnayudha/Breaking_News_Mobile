@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_uas/models/item.dart';
+import 'package:intl/intl.dart';
 
 class ViewPage extends StatefulWidget {
   final Item item;
@@ -45,7 +46,7 @@ class _ViewPageState extends State<ViewPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Kategori',
+                      widget.item.kategori,
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -80,7 +81,7 @@ class _ViewPageState extends State<ViewPage> {
                 ),
                 children: [
                   Text(
-                    widget.item.judul,
+                    widget.item.judul.toUpperCase(),
                     style: GoogleFonts.poppins(
                       textStyle: TextStyle(
                           letterSpacing: .4,
@@ -90,16 +91,33 @@ class _ViewPageState extends State<ViewPage> {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  Image.asset(
-                    'img/back1.png',
-                    fit: BoxFit.cover,
-                  ),
+                  Divider(),
+                  widget.item.image.isNotEmpty
+                      ? Image.network(
+                          widget.item.image,
+                          height: 250,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'img/back1.png',
+                          fit: BoxFit.cover,
+                        ),
+                  Divider(),
                   Container(
                     child: Row(
                       children: [
                         Text("Tanggal Publish: "),
-                        Text(widget.item.tggl.toString()),
-                        Text(" Penulis: "),
+                        Text(DateFormat.yMMMd().format(
+                            DateTime.fromMicrosecondsSinceEpoch(
+                                int.parse(widget.item.tggl.toString())))),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Container(
+                    child: Row(
+                      children: [
+                        Text("Penulis: "),
                         Text(widget.item.penulis),
                       ],
                     ),

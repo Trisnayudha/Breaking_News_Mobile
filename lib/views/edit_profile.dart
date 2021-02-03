@@ -14,7 +14,7 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
-  final DatabaseService _auth = DatabaseService();
+  // final DatabaseService _auth = DatabaseService();
   File image;
   String usernamenotchange;
   String username;
