@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_uas/models/item.dart';
 import 'package:intl/intl.dart';
+import 'package:project_uas/views/view_komentar.dart';
 
 class ViewPage extends StatefulWidget {
   final Item item;
@@ -126,6 +127,37 @@ class _ViewPageState extends State<ViewPage> {
                   Text(widget.item.desc),
                   Divider(
                     height: 20,
+                  ),
+                  Container(
+                    color: Colors.red,
+                    width: 180,
+                    height: 50,
+                    child: SizedBox(
+                      width: 0,
+                      child: RaisedButton(
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(child: Icon(Icons.comment_rounded)),
+                              Center(child: Text("Berikan Komentar")),
+                            ],
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Komentar(
+                                  //
+                                  ),
+                            ),
+                          );
+                        },
+                        color: Colors.white,
+                        textColor: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),

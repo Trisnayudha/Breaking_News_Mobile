@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Item {
   final String id;
   final String judul;
@@ -38,4 +40,16 @@ class Item {
         'tggl': tggl,
         'kategori': kategori,
       };
+
+  factory Item.fromFireStore(DocumentSnapshot doc) {
+    return Item(
+      id: doc['id'],
+      judul: doc['judul'],
+      penulis: doc['penulis'],
+      image: doc['image'],
+      desc: doc['desc'],
+      tggl: doc['tggl'],
+      kategori: doc['kategori'],
+    );
+  }
 }
