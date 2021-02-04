@@ -103,8 +103,7 @@ class _EditProfileState extends State<EditProfile> {
                                               ? snapshot.data.photo.isNotEmpty
                                                   ? NetworkImage(
                                                       snapshot.data.photo)
-                                                  : AssetImage(
-                                                      'asset/image/tshirt.jpg')
+                                                  : AssetImage('img/back1.png')
                                               : AssetImage('img/back1.png'),
                                     ),
                                   ),
