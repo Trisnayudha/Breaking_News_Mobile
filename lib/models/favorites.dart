@@ -5,8 +5,15 @@ class Favorites {
   Future save({Item news}) async {
     final pref = await SharedPreferences.getInstance();
 
-    pref.setStringList(news.judul,
-        [news.judul, news.tggl.toString(), news.image]).then((value) {
+    pref.setStringList(news.judul, [
+      news.judul,
+      news.tggl.toString(),
+      news.image,
+      news.id,
+      news.kategori,
+      news.penulis,
+      news.desc
+    ]).then((value) {
       value ? print('Berhasil Disimpan') : print('Gagal Disimpan');
     });
   }
@@ -25,10 +32,13 @@ class Favorites {
     keys.forEach((element) {
       List<String> content = pref.getStringList(element);
       Item news = Item(
-        judul: content[0],
-        tggl: int.parse(content[1]),
-        image: content[2],
-      );
+          judul: content[0],
+          tggl: int.parse(content[1]),
+          image: content[2],
+          id: content[3],
+          kategori: content[4],
+          penulis: content[5],
+          desc: content[6]);
       listItem.add(news);
     });
     print(listItem);
