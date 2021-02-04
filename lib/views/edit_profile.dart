@@ -1,12 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project_uas/models/user.dart';
 import 'package:project_uas/service/database.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile(String username);
+  EditProfile(String username, this.user);
+  final UserData user;
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -15,11 +18,9 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   // final DatabaseService _auth = DatabaseService();
+  String photo;
   File image;
-  String usernamenotchange;
   String username;
-  String email;
-  String emailnotchange;
   bool loading = false;
   String error = '';
   @override
@@ -29,10 +30,10 @@ class _EditProfileState extends State<EditProfile> {
         stream: DatabaseService(uid: user.uid).userData,
         builder: (context, snapshot) {
           // inspect(snapshot);
-          UserData data = snapshot.data;
           if (snapshot.hasData) {
-            usernamenotchange = data.username;
-            emailnotchange = data.email;
+            UserData userData = snapshot.data;
+            // usernamenotchange = data.username;
+            // image = data.photo;
             return Scaffold(
               body: Container(
                 padding: EdgeInsets.only(top: 25),
@@ -96,50 +97,33 @@ class _EditProfileState extends State<EditProfile> {
                                     child: CircleAvatar(
                                       radius: 59,
                                       backgroundColor: Colors.white,
-                                      backgroundImage:
-                                          // image != null
-                                          //     ? FileImage(image)
-                                          //     : widget.item != null
-                                          //         ? widget.item.image.isNotEmpty
-                                          //             ? NetworkImage(widget.item.image)
-                                          //             : AssetImage('asset/image/tshirt.jpg')
-                                          // :
-                                          AssetImage('img/back1.png'),
+                                      backgroundImage: image != null
+                                          ? FileImage(image)
+                                          : snapshot.data != null
+                                              ? snapshot.data.photo.isNotEmpty
+                                                  ? NetworkImage(
+                                                      snapshot.data.photo)
+                                                  : AssetImage(
+                                                      'asset/image/tshirt.jpg')
+                                              : AssetImage('img/back1.png'),
                                     ),
                                   ),
-                                  // onTap: () {
-                                  //   getImage(context);
-                                  // },
+                                  onTap: () {
+                                    getImage(context);
+                                  },
                                 ),
                               ),
                             ),
                             TextFormField(
-                              // controller: username,
-
+                              initialValue: userData.username,
                               textAlignVertical: TextAlignVertical.center,
                               textAlign: TextAlign.left,
                               decoration: InputDecoration(
-                                // hintText: data.username,
                                 border: OutlineInputBorder(),
                                 labelText: 'Username',
                               ),
                               onChanged: (val) {
                                 setState(() => username = val);
-                              },
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              textAlignVertical: TextAlignVertical.center,
-                              textAlign: TextAlign.left,
-                              decoration: InputDecoration(
-                                // hintText: data.email,
-                                border: OutlineInputBorder(),
-                                labelText: 'Email',
-                              ),
-                              onChanged: (val) {
-                                setState(() => email = val);
                               },
                             ),
                             SizedBox(
@@ -156,23 +140,23 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  // dynamic result = username != null
-                                  //     ? username
-                                  //     : usernamenotchange;
-                                  // print(result);
-                                  // if (_formKey.currentState.validate()) {
-                                  //   setState(() => loading = true);
-                                  //   dynamic result = _auth.changeProfile(
-                                  //       username != null
-                                  //           ? username
-                                  //           : usernamenotchange);
-                                  //   if (result == null) {
-                                  //     setState(() {
-                                  //       error = "Please supply a valid email";
-                                  //       loading = false;
-                                  //     });
-                                  //   }
-                                  // }
+                                  if (_formKey.currentState.validate()) {
+                                    String randomMillis = DateTime.now()
+                                        .microsecondsSinceEpoch
+                                        .toString();
+                                    await DatabaseService(uid: user.uid)
+                                        .updateUserData(
+                                      username ?? snapshot.data.username,
+                                      photo ?? image != null
+                                          ? snapshot.data != null
+                                              ? await uploadFile(
+                                                  image, randomMillis)
+                                              : await uploadFile(
+                                                  image, randomMillis)
+                                          : '',
+                                    );
+                                  }
+                                  inspect(snapshot.data.photo);
                                   Navigator.pop(context);
                                 }),
                           ],
@@ -189,5 +173,61 @@ class _EditProfileState extends State<EditProfile> {
             );
           }
         });
+  }
+
+  imgFromCamera() async {
+    PickedFile imgCamera = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 50);
+    setState(() {
+      image = File(imgCamera.path);
+    });
+  }
+
+  imgFromGallery() async {
+    PickedFile imgGallery = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      image = File(imgGallery.path);
+    });
+  }
+
+  getImage(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Gallery'),
+                    onTap: () {
+                      imgFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: Icon(Icons.photo_camera),
+                  title: Text('Camera'),
+                  onTap: () {
+                    imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<String> uploadFile(File image, String filename) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("profile/" + filename);
+    UploadTask uploadTask = ref.putFile(image);
+    return uploadTask.then((res) async {
+      return await res.ref.getDownloadURL();
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_uas/service/auth.dart';
 import 'package:project_uas/service/loading.dart';
+import 'package:project_uas/views/change_password.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -31,15 +32,23 @@ class _SignInState extends State<SignIn> {
                 child: Form(
             key: _formKey,
             child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Image.asset(
-                  "img/logo.jpg",
-                  width: 300.0,
-                  height: 300.0,
-                ),
-                Divider(),
-                Text(
-                  "Sign In",
+                Container(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "img/logo.jpg",
+                        width: 300.0,
+                        height: 300.0,
+                      ),
+                      Divider(),
+                      Text(
+                        "Sign In",
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
@@ -99,8 +108,29 @@ class _SignInState extends State<SignIn> {
                     },
                   ),
                 ),
+                Container(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 15.0, 0),
+                        child: TextButton(
+                          child: Text("Forgot Password"),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePassword()),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
@@ -144,7 +174,7 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("I dont have already Account"),
-                      FlatButton(
+                      TextButton(
                         child: Text("Register"),
                         onPressed: () {
                           widget.toggleView();

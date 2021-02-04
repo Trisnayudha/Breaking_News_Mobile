@@ -74,8 +74,9 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditProfile(data.username)),
+                                builder: (context) =>
+                                    EditProfile(data.username, user = null),
+                              ),
                             );
                           },
                         ),

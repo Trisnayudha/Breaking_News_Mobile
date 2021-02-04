@@ -173,7 +173,7 @@ class _RegisterState extends State<Register> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("I have already Account"),
-                          FlatButton(
+                          TextButton(
                             child: Text("Sign In"),
                             onPressed: () {
                               widget.toggleView();
