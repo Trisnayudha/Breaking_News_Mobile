@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project_uas/service/auth.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -6,6 +8,10 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  String email = '';
+  final _formKey = GlobalKey<FormState>();
+  final auth = FirebaseAuth.instance;
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +31,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Edit Profile',
+                      'Change Password',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -51,48 +57,24 @@ class _ChangePasswordState extends State<ChangePassword> {
               height: 1,
               color: Colors.black,
             ),
-            Expanded(
-                child: ListView(
-                    padding: EdgeInsets.only(
-                      top: 10,
-                      left: 10,
-                      right: 10,
-                    ),
-                    children: [
-                  TextField(
-                    // controller: username,
-
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password Lama',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    // controller: descController,
-
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password Baru',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    // controller: descController,
-
-                    textAlignVertical: TextAlignVertical.center,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Konfirmasi Password Baru',
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextFormField(
+                      textAlignVertical: TextAlignVertical.center,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Masukan Email Anda',
+                      ),
+                      validator: (val) =>
+                          val.isEmpty ? 'Enter an email ' : null,
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
                     ),
                   ),
                   SizedBox(
@@ -102,23 +84,19 @@ class _ChangePasswordState extends State<ChangePassword> {
                       height: 45,
                       color: Colors.blue,
                       child: Text(
-                        'Submit',
+                        'Send Request',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                         ),
                       ),
                       onPressed: () async {
-                        Navigator.pop(context);
-                      }
-
-                      // FirebaseFirestore.instance
-                      //     .collection('item')
-                      //     .doc(widget.id)
-                      //     .update(item.toJson());
-
-                      ),
-                ])),
+                        auth.sendPasswordResetEmail(email: email);
+                        Navigator.of(context).pop(await _auth.signOut());
+                      }),
+                ],
+              ),
+            ),
           ],
         ),
       ),
