@@ -1,7 +1,8 @@
-// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-// import 'package:project_uas/service/globalnews.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:project_uas/service/news.dart';
+import 'package:project_uas/service/globalnews.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum Condition { initial, processing, result }
 
@@ -11,9 +12,9 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  // GlobalNews service = GlobalNews();
   TextEditingController keyword = TextEditingController();
-  // List<News> listNews = List<News>();
+  GlobalNews service = GlobalNews();
+  List<News> listNews = List<News>();
   Condition condition = Condition.initial;
   bool isProcess = false;
   @override
@@ -37,10 +38,9 @@ class _SearchState extends State<Search> {
                           ),
                         ),
                       )
-                    : null,
-            // BodySection(
-            //     listNews: listNews,
-            //   )
+                    : BodySection(
+                        listNews: listNews,
+                      )
           ],
         ),
       ),
@@ -97,15 +97,15 @@ class _SearchState extends State<Search> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      // setState(() {
-                      //   condition = Condition.processing;
-                      // });
-                      // service.getNews(keyword: keyword.text).then((value) {
-                      //   setState(() {
-                      //     listNews = value;
-                      //     condition = Condition.result;
-                      //   });
-                      // });
+                      setState(() {
+                        condition = Condition.processing;
+                      });
+                      service.getNews(keyword: keyword.text).then((value) {
+                        setState(() {
+                          listNews = value;
+                          condition = Condition.result;
+                        });
+                      });
                       clearText();
                     }),
               ],
@@ -117,65 +117,65 @@ class _SearchState extends State<Search> {
   }
 }
 
-// class BodySection extends StatefulWidget {
-//   final List<News> listNews;
-//   BodySection({this.listNews});
+class BodySection extends StatefulWidget {
+  final List<News> listNews;
+  BodySection({this.listNews});
 
-//   @override
-//   _BodySectionState createState() => _BodySectionState();
-// }
+  @override
+  _BodySectionState createState() => _BodySectionState();
+}
 
-// class _BodySectionState extends State<BodySection> {
-//   _launchURL({BuildContext context, String url}) async {
-//     if (await canLaunch(url)) {
-//       await launch(url);
-//     } else {
-//       Scaffold.of(context)
-//           .showSnackBar(SnackBar(content: Text('Sorry, Url is not valid')));
-//     }
-//   }
+class _BodySectionState extends State<BodySection> {
+  _launchURL({BuildContext context, String url}) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('Sorry, Url is not valid')));
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: SingleChildScrollView(
-//         physics: BouncingScrollPhysics(),
-//         padding: EdgeInsets.all(5),
-//         child: Column(
-//           children: widget.listNews.map((element) {
-//             return ListTile(
-//               onTap: () {
-//                 _launchURL(context: context, url: element.newsUrl);
-//               },
-//               leading: ClipRRect(
-//                 borderRadius: BorderRadius.circular(5),
-//                 child: Container(
-//                   width: 100,
-//                   height: 75,
-//                   child: CachedNetworkImage(
-//                     imageUrl: element.imgUrl == null
-//                         ? 'https://bodybigsize.com/wp-content/uploads/2020/02/noimage-7.png'
-//                         : element.imgUrl,
-//                     placeholder: (context, url) =>
-//                         Center(child: CircularProgressIndicator()),
-//                     errorWidget: (context, url, error) => Icon(Icons.error),
-//                     fit: BoxFit.cover,
-//                   ),
-//                 ),
-//               ),
-//               title: Text(
-//                 element.title,
-//                 style: TextStyle(color: Colors.blue),
-//                 overflow: TextOverflow.ellipsis,
-//               ),
-//               subtitle: Text(
-//                 element.source,
-//                 style: TextStyle(fontSize: 12),
-//               ),
-//             );
-//           }).toList(),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(5),
+        child: Column(
+          children: widget.listNews.map((element) {
+            return ListTile(
+              onTap: () {
+                _launchURL(context: context, url: element.newsUrl);
+              },
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Container(
+                  width: 100,
+                  height: 75,
+                  child: CachedNetworkImage(
+                    imageUrl: element.imgUrl == null
+                        ? 'https://bodybigsize.com/wp-content/uploads/2020/02/noimage-7.png'
+                        : element.imgUrl,
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              title: Text(
+                element.title,
+                style: TextStyle(color: Colors.blue),
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                element.source,
+                style: TextStyle(fontSize: 12),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
