@@ -1,6 +1,7 @@
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:project_uas/authenticate/sign_in.dart';
 import 'package:project_uas/models/user.dart';
 import 'package:project_uas/service/auth.dart';
 import 'package:project_uas/service/database.dart';
@@ -108,6 +109,12 @@ class _ProfileState extends State<Profile> {
                           label: Text('Log Out'),
                           onPressed: () async {
                             await _auth.signOut();
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (BuildContext context) => SignIn()),
+                            //   (route) => false,
+                            // );
                           },
                         ),
                       ],

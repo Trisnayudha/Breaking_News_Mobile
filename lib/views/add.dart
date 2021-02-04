@@ -147,28 +147,32 @@ class _AddState extends State<Add> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            String randomMillis = DateTime.now()
+                            String randomIdPict = DateTime.now()
+                                .millisecondsSinceEpoch
+                                .toString();
+                            String randomtggl = DateTime.now()
                                 .microsecondsSinceEpoch
                                 .toString();
 
                             Item item = Item(
                                 id: widget.item != null
                                     ? widget.item.id
-                                    : randomMillis,
+                                    : randomIdPict,
                                 judul: judulController.text,
                                 penulis: penulisController.text,
                                 image: image != null
                                     ? widget.item != null
                                         ? await uploadFile(image, widget.id)
-                                        : await uploadFile(image, randomMillis)
+                                        : await uploadFile(image, randomIdPict)
                                     : '',
                                 desc: descController.text,
-                                tggl: int.parse(randomMillis),
+                                tggl: int.parse(randomtggl),
                                 kategori: kategoriController.text);
                             if (widget.item == null) {
                               FirebaseFirestore.instance
                                   .collection('item')
-                                  .add(item.toJson());
+                                  .doc(randomtggl)
+                                  .set(item.toJson());
                             } else {
                               FirebaseFirestore.instance
                                   .collection('item')
