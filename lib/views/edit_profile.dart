@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -147,15 +146,14 @@ class _EditProfileState extends State<EditProfile> {
                                         .updateUserData(
                                       username ?? snapshot.data.username,
                                       photo ?? image != null
-                                          ? snapshot.data != null
+                                          ? snapshot.data == null
                                               ? await uploadFile(
                                                   image, randomMillis)
                                               : await uploadFile(
                                                   image, randomMillis)
-                                          : '',
+                                          : snapshot.data.photo,
                                     );
                                   }
-                                  inspect(snapshot.data.photo);
                                   Navigator.pop(context);
                                 }),
                           ],
