@@ -53,3 +53,9 @@ class Item {
     );
   }
 }
+class ItemProvider {
+  static Stream<List<Item>> fetchAll() {
+    return FirebaseFirestore.instance.collection('item').snapshots().map(
+        (list) => list.docs.map((doc) => Item.fromFireStore(doc)).toList());
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_uas/models/favorites.dart';
 import 'package:project_uas/models/item.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +13,7 @@ class CardItem extends StatefulWidget {
 }
 
 class _CardItemState extends State<CardItem> {
+  Favorites favorite = Favorites();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,12 +97,12 @@ class _CardItemState extends State<CardItem> {
                       color: Colors.green,
                     ),
                     onPressed: () {
-                      // favorite.save(news: element).then((value) {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          duration: Duration(milliseconds: 500),
-                          backgroundColor: Colors.green,
-                          content: Text('News has been saved')));
-                      // });
+                      favorite.save(news: widget.item).then((value) {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            duration: Duration(milliseconds: 500),
+                            backgroundColor: Colors.green,
+                            content: Text('News has been saved')));
+                      });
                     }),
               ],
             ),

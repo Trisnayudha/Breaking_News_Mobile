@@ -8,7 +8,10 @@ class ViewPage extends StatefulWidget {
   final Item item;
   final String id;
 
-  ViewPage({@required this.item, this.id});
+  ViewPage({
+    @required this.item,
+    this.id,
+  });
 
   @override
   _ViewPageState createState() => _ViewPageState();

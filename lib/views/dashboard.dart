@@ -4,18 +4,30 @@ import 'package:project_uas/models/item.dart';
 import 'package:project_uas/service/card_item.dart';
 import 'package:project_uas/views/view_page.dart';
 
+import 'package:project_uas/service/auth.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Breaking News")),
         elevation: 0.0,
+        actions: [
+          FlatButton.icon(
+            icon: Icon(Icons.logout),
+            label: Text('Log Out'),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          ),
+        ],
       ),
       body: Container(
         child: Column(
